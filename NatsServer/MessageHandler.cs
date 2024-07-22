@@ -30,7 +30,7 @@ namespace NatsServer
                     HandlePong(client);
                     break;
                 default:
-                    Console.WriteLine("Unknows message type received");
+                    Console.WriteLine("Unknown message type received");
                     break;
                 
             }
