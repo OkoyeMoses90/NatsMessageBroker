@@ -67,6 +67,27 @@ namespace NatsServer
                         await stream.WriteAsync(Encoding.UTF8.GetBytes("PONG\r\n"));
                         break;
 
+                    case NatsMessageType.Sub:
+                        if (parsedMessage.Parts.Length >= 3)
+                        {
+                            var topic = parsedMessage.Parts[1];
+                            _subscriptionManager.Subscribe(topic, client);
+                            Console.WriteLine("Client has subscribed to {topic}");
+                        }
+                        break;
+                    
+                    case NatsMessageType.Pub:
+                        if (parsedMessage.Parts.Length >= 3)
+                        {
+                            var topic = parsedMessage.Parts[1];
+                            var payloadIndex = message.IndexOf('\n') + 1;
+                            var payload = message.Substring(payloadIndex);
+                            await _subscriptionManager.Publish(topic, payload);
+                            Console.WriteLine($"Published message to {topic}");
+                        }
+                        break;
+
+
                     default:
                         Console.WriteLine("Default case");
                         break;
