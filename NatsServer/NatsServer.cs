@@ -76,6 +76,15 @@ namespace NatsServer
                         }
                         break;
                     
+                    case NatsMessageType.Unsub:
+                        if (parsedMessage.Parts.Length >= 3)
+                        {
+                            var topic = parsedMessage.Parts[1];
+                            _subscriptionManager.Unsubscribe(topic, client);
+                            Console.WriteLine($"Clinet unsubscribed from {topic}");
+                        }
+                        break;
+
                     case NatsMessageType.Pub:
                         if (parsedMessage.Parts.Length >= 3)
                         {
