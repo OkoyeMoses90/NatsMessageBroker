@@ -80,10 +80,9 @@ namespace NatsServer
                         if (parsedMessage.Parts.Length >= 3)
                         {
                             var topic = parsedMessage.Parts[1];
-                            var payloadIndex = message.IndexOf('\n') + 1;
-                            var payload = message.Substring(payloadIndex);
+                            var payload = message.Substring(message.IndexOf(parsedMessage.Parts[2]) + parsedMessage.Parts[2].Length).Trim();
                             await _subscriptionManager.Publish(topic, payload);
-                            Console.WriteLine($"Published message to {topic}");
+                            Console.WriteLine($"Published message to {topic} : {payload}");
                         }
                         break;
 
